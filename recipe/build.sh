@@ -8,6 +8,6 @@ export ERL_TOP="$(pwd)"
 make
 make release_tests
 cd "${ERL_TOP}/release/tests/test_server"
-${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop
+trap "${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop" 15
 cd ${ERL_TOP}
 make install
