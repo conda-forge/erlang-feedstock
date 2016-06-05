@@ -6,8 +6,9 @@ export ERL_TOP="$(pwd)"
 ./configure --with-ssl="${PREFIX}" --prefix="${PREFIX}" --without-javac \
   --with-libatomic_ops="${PREFIX}" --enable-m${ARCH}-build
 make
-make release_tests
+make release_tests >> $RECIPE_DIR/stdout.log
+
 cd "${ERL_TOP}/release/tests/test_server"
-${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop
+${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop >> $RECIPE_DIR/stdout.log
 cd ${ERL_TOP}
-make install > $RECIPE_DIR/build.log
+make install >> $RECIPE_DIR/build.log
