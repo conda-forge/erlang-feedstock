@@ -17,18 +17,20 @@ build:
 requirements:
   build:
     - autoconf 2.*
-    - m4 1.4.*
     - perl 5.20.3.1
-    - readline 7.0
-    - openssl 1.0.*
-    - ncurses 5.9
-    - zlib 1.2.11
-    - toolchain
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - m4 1.4.*
+    - readline
+    - openssl
+    - ncurses
+    - zlib
   run:
-    - readline 7.0
-    - openssl 1.0.*
-    - ncurses 5.9
-    - zlib 1.2.11
+    - readline
+    - openssl
+    - ncurses
+    - zlib
 
 test:
   commands:
