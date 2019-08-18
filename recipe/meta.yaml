@@ -1,5 +1,4 @@
 {% set version = "22.0" %}
-{% set sha256 = "7efb93a542d66137ba4f38f9734ee7b03adc17d949fac561cca3b2d8f6fafcd2" %}
 
 package:
   name: erlang
@@ -8,10 +7,10 @@ package:
 source:
   fn: otp_src_{{ version }}.tar.gz
   url: https://github.com/erlang/otp/archive/OTP-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 7efb93a542d66137ba4f38f9734ee7b03adc17d949fac561cca3b2d8f6fafcd2
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
 
 requirements:
@@ -40,7 +39,8 @@ test:
 
 about:
   home: http://www.erlang.org/
-  license: Apache 2.0
+  license: Apache-2.0
+  license_file: LICENSE.txt
   summary: "A programming language used to build massively scalable soft real-time systems with requirements on high availability."
 
 extra:
