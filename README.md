@@ -5,7 +5,7 @@ Home: http://www.erlang.org/
 
 Package license: Apache-2.0
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: A programming language used to build massively scalable soft real-time systems with requirements on high availability.
 
