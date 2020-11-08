@@ -11,6 +11,11 @@ export ERL_TOP="$(pwd)"
     --enable-m${ARCH}-build
 make -j $CPU_COUNT
 
+# Fix up too long shebang line which is blocking tests on Linux
+# cf. https://github.com/conda-forge/erlang-feedstock/issues/16
+sed -i.bak '1c\#!/usr/bin/env perl' make/make_emakefile
+cat make/make_emakefile
+
 make release_tests
 cd "${ERL_TOP}/release/tests/test_server"
 ${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop
