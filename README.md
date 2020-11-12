@@ -1,13 +1,15 @@
 About erlang
 ============
 
-Home: http://www.erlang.org/
+Home: https://www.erlang.org/
 
 Package license: Apache-2.0
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/erlang-feedstock/blob/master/LICENSE.txt)
 
 Summary: A programming language used to build massively scalable soft real-time systems with requirements on high availability.
+
+Development: https://github.com/erlang/otp
 
 Current build status
 ====================
@@ -154,6 +156,7 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@anthchirp](https://github.com/anthchirp/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@scopatz](https://github.com/scopatz/)
 * [@sodre](https://github.com/sodre/)
