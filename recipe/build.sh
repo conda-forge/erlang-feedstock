@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ex
 
 export LIBRARY_PATH="${PREFIX}/lib:${LIBRARY_PATH}"
 export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
