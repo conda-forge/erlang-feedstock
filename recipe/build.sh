@@ -1,10 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -ex
 
 export LIBRARY_PATH="${PREFIX}/lib:${LIBRARY_PATH}"
 export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
-export ERL_TOP="$(pwd)"
-./otp_build autoconf
+export ERL_TOP="${PWD}"
+
+if [[ "${target_platform}" == osx-* ]]; then
+  export CXXFLAGS="${CXXFLAGS} -DTARGET_OS_OSX=1"
+fi
+
 ./configure \
     --prefix="${PREFIX}" \
     --with-ssl="${PREFIX}" \
