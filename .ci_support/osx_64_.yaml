@@ -5,7 +5,7 @@ c_compiler:
 c_compiler_version:
 - '11'
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -23,14 +23,10 @@ ncurses:
 openssl:
 - 1.1.1
 perl:
-- 5.26.2
+- 5.32.1
 pin_run_as_build:
   ncurses:
     max_pin: x.x
-  openssl:
-    max_pin: x.x.x
-  perl:
-    max_pin: x.x.x
   readline:
     max_pin: x
   zlib:
