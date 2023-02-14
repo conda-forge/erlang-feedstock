@@ -9,20 +9,23 @@ source:
   sha256: 535e535b2e90e71deca96c53f19710e6ebf3d4289b0a3116e7cf83b7e2c4bb7e
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
     - autoconf 2.*
     - m4 1.4.*
     - make
+    - perl
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - sysroot_linux-64 2.17  # [linux64]
   host:
-    - perl
     - readline
     - openssl
     - ncurses
