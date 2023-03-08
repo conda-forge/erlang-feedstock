@@ -1,11 +1,11 @@
-About erlang
-============
+About erlang-feedstock
+======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/erlang-feedstock/blob/main/LICENSE.txt)
 
 Home: https://www.erlang.org/
 
 Package license: Apache-2.0
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/erlang-feedstock/blob/main/LICENSE.txt)
 
 Summary: A programming language used to build massively scalable soft real-time systems with requirements on high availability.
 
