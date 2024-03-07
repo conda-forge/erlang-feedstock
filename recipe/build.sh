@@ -1,4 +1,8 @@
 #!/bin/bash
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./make/autoconf
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./lib/common_test/test_server
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./erts/autoconf
 set -ex
 
 export LIBRARY_PATH="${PREFIX}/lib:${LIBRARY_PATH}"
