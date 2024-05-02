@@ -1,4 +1,4 @@
-{% set version = "26.2.4" %}
+{% set version = "26.2.5" %}
 
 package:
   name: erlang
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/erlang/otp/archive/OTP-{{ version }}.tar.gz
-  sha256: c3bd54ee83282764f3c236e3aa49d681bac0b4011242e3512d66a7ee2ed79819
+  sha256: d34b409cb5968ae47dd5a0c4f85b925d5601898d90788bbb08d514964a3a141d
 
 build:
   number: 0
@@ -15,12 +15,12 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - autoconf 2.*
     - m4 1.4.*
     - make
-    - sysroot_linux-64 2.17  # [linux64]
   host:
     - perl
     - readline
