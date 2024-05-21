@@ -14,23 +14,24 @@ fi
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
 
   BOOTSTRAP_PREFIX="${PREFIX}/../bootstrap"
-  CFLAGS= ./configure \
+  CFLAGS= LDFLAGS= ./configure \
       --enable-bootstrap-only \
       --host="${CONDA_TOOLCHAIN_BUILD}" \
       --prefix="${BOOTSTRAP_PREFIX}"
 
   make -j $CPU_COUNT
   make install
+
   export PATH="${BOOTSTRAP_PREFIX}/bin:${PATH}"
   export LIBRARY_PATH="${BOOTSTRAP_PREFIX}/lib:${LIBRARY_PATH}"
   export LD_LIBRARY_PATH="${BOOTSTRAP_PREFIX}/lib:${LD_LIBRARY_PATH}"
 fi
 
 ./configure \
-      --prefix="${PREFIX}" \
-      --with-ssl="${PREFIX}" \
-      --without-javac \
-      --enable-m${ARCH}-build
+    --prefix="${PREFIX}" \
+    --with-ssl="${PREFIX}" \
+    --without-javac \
+    --enable-m${ARCH}-build
 
 make -j $CPU_COUNT
 
