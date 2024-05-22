@@ -13,18 +13,18 @@ fi
 # https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
 
-  BOOTSTRAP_PREFIX="${PREFIX}/../bootstrap"
+  # We need to override the host for the bootstrap compilation,
+  # otherwise configure fails with:
+  # error: Cannot both cross compile and build a bootstrap system
   CFLAGS= LDFLAGS= ./configure \
       --enable-bootstrap-only \
-      --host="${CONDA_TOOLCHAIN_BUILD}" \
-      --prefix="${BOOTSTRAP_PREFIX}"
+      --host="${BUILD}" \
+      --build="${BUILD}" \
+      --prefix="${BUILD_PREFIX}" \
+      --without-javac
 
   make -j $CPU_COUNT
   make install
-
-  export PATH="${BOOTSTRAP_PREFIX}/bin:${PATH}"
-  export LIBRARY_PATH="${BOOTSTRAP_PREFIX}/lib:${LIBRARY_PATH}"
-  export LD_LIBRARY_PATH="${BOOTSTRAP_PREFIX}/lib:${LD_LIBRARY_PATH}"
 fi
 
 ./configure \
