@@ -16,12 +16,18 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   # We need to override the host for the bootstrap compilation,
   # otherwise configure fails with:
   # error: Cannot both cross compile and build a bootstrap system
-  CC="${CC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" ./configure \
+  LD_FOR_BUILD=${CC//gnu-cc/gnu-ld}
+  CPP_FOR_BUILD=${CC//gnu-cc/gnu-cpp}
+  AR_FOR_BUILD=${CC//gnu-cc/gnu-ar}
+  RANLIB_FOR_BUILD=${CC//gnu-cc/gnu-ranlib}
+  CFLAGS= CXXFLAGS= CC="${CC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" LD="${LD_FOR_BUILD}" AR="${AR_FOR_BUILD}" RANLIB="${RANLIB_FOR_BUILD}" CPP="${CPP_FOR_BUILD}" \
+    ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
       || { cat make/config.log ; exit 1; }
 
+  cat make/config.log
   make -j $CPU_COUNT
 fi
 
@@ -32,6 +38,7 @@ fi
     --enable-m${ARCH}-build \
     || { cat make/config.log ; exit 1; }
 
+cat make/config.log
 make -j $CPU_COUNT
 
 # Fix up too long shebang line which is blocking tests on Linux
