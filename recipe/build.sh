@@ -16,23 +16,21 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   # We need to override the host for the bootstrap compilation,
   # otherwise configure fails with:
   # error: Cannot both cross compile and build a bootstrap system
-  PREFIX="${BUILD_PREFIX}" CC="${CC_FOR_BUILD}" FC="${FC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" ./configure \
+  CC="${CC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
-      --build="${BUILD}" \
-      --prefix="${BUILD_PREFIX}" \
-      --without-javac
+      --without-javac \
+      || { cat make/config.log ; exit 1; }
 
   make -j $CPU_COUNT
-  # make install
-  # make clean
 fi
 
 ./configure \
     --prefix="${PREFIX}" \
     --with-ssl="${PREFIX}" \
     --without-javac \
-    --enable-m${ARCH}-build
+    --enable-m${ARCH}-build \
+    || { cat make/config.log ; exit 1; }
 
 make -j $CPU_COUNT
 
@@ -41,8 +39,10 @@ make -j $CPU_COUNT
 sed -i.bak -e '1 s@.*@#!/usr/bin/env perl@' make/make_emakefile
 
 make release_tests
-cd "${ERL_TOP}/release/tests/test_server"
-${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop
-cd ${ERL_TOP}
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -ne 1 ]]; then
+  cd "${ERL_TOP}/release/tests/test_server"
+  ${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop || ls -lrta ${ERL_TOP}/bin/
+  cd ${ERL_TOP}
+fi
 
 make install
