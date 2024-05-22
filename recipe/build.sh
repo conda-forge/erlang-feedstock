@@ -9,26 +9,34 @@ if [[ "${target_platform}" == osx-* ]]; then
   export CXXFLAGS="${CXXFLAGS} -DTARGET_OS_OSX=1"
 fi
 
-# For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
-# https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
-
-  # We need to override the host for the bootstrap compilation,
-  # otherwise configure fails with:
+function bootstrap_build {
+  echo "Building bootstrap erlang for cross-compilation"
+  # We need to override the compilation toolchain that is setup for cross-compilation,
+  # the bootstrap system needs to be compiled with the guest (x86) toolchain.
+  # Otherwise, configure fails with:
   # error: Cannot both cross compile and build a bootstrap system
-  LD_FOR_BUILD=${CC//gnu-cc/gnu-ld}
-  CPP_FOR_BUILD=${CC//gnu-cc/gnu-cpp}
-  AR_FOR_BUILD=${CC//gnu-cc/gnu-ar}
-  RANLIB_FOR_BUILD=${CC//gnu-cc/gnu-ranlib}
-  CFLAGS= CXXFLAGS= CC="${CC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" LD="${LD_FOR_BUILD}" AR="${AR_FOR_BUILD}" RANLIB="${RANLIB_FOR_BUILD}" CPP="${CPP_FOR_BUILD}" \
-    ./configure \
+  local CC CXX CPP LD AR RANLIB
+  CC=${CC_FOR_BUILD}
+  CXX=${CXX_FOR_BUILD}
+  LD=${CC_FOR_BUILD//gnu-cc/gnu-ld}
+  CPP=${CC_FOR_BUILD//gnu-cc/gnu-cpp}
+  AR=${CC_FOR_BUILD//gnu-cc/gnu-ar}
+  RANLIB=${CC_FOR_BUILD//gnu-cc/gnu-ranlib}
+  CFLAGS= CXXFLAGS= ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
       || { cat make/config.log ; exit 1; }
 
+  echo "Boostrap build config.log"
   cat make/config.log
-  make -j $CPU_COUNT
+  make -j "$CPU_COUNT"
+}
+
+# For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
+# https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
+  bootstrap_build
 fi
 
 ./configure \
