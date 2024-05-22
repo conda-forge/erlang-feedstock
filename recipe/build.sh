@@ -46,10 +46,8 @@ make -j $CPU_COUNT
 sed -i.bak -e '1 s@.*@#!/usr/bin/env perl@' make/make_emakefile
 
 make release_tests
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -ne 1 ]]; then
-  cd "${ERL_TOP}/release/tests/test_server"
-  ${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop || ls -lrta ${ERL_TOP}/bin/
-  cd ${ERL_TOP}
-fi
-
 make install
+
+cd "${ERL_TOP}/release/tests/test_server"
+${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop || ls -lrta ${ERL_TOP}/bin/
+cd ${ERL_TOP}
