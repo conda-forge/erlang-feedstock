@@ -16,7 +16,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   # We need to override the host for the bootstrap compilation,
   # otherwise configure fails with:
   # error: Cannot both cross compile and build a bootstrap system
-  CFLAGS= LDFLAGS= ./configure \
+  PREFIX="${BUILD_PREFIX}" CC="${CC_FOR_BUILD}" FC="${FC_FOR_BUILD}" CXX="${CXX_FOR_BUILD}" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --build="${BUILD}" \
@@ -24,7 +24,8 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
       --without-javac
 
   make -j $CPU_COUNT
-  make install
+  # make install
+  # make clean
 fi
 
 ./configure \
