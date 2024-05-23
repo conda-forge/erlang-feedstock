@@ -17,9 +17,6 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - autoconf 2.*
-    - m4 1.4.*
     - make
   host:
     - perl
