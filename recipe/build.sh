@@ -22,11 +22,13 @@ bootstrap_build() {
   local CC CXX CPP LD AR RANLIB
   CC=${CC_FOR_BUILD}
   CXX=${CXX_FOR_BUILD}
-  LD=${CC_FOR_BUILD//gnu-cc/gnu-ld}
-  CPP=${CC_FOR_BUILD//gnu-cc/gnu-cpp}
-  AR=${CC_FOR_BUILD//gnu-cc/gnu-ar}
-  RANLIB=${CC_FOR_BUILD//gnu-cc/gnu-ranlib}
-  CFLAGS= CXXFLAGS= ./configure \
+  LD=${CC_FOR_BUILD//-clang/-ld}
+  CPP=${CC_FOR_BUILD//-clang/-cpp}
+  AR=${CC_FOR_BUILD//-clang/-ar}
+  RANLIB=${CC_FOR_BUILD//-clang/-ranlib}
+  CFLAGS="-O1"
+  CXXFLAGS="-O1"
+  ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
