@@ -67,6 +67,12 @@ make release_tests
 # so we first run `make install` before running tests.
 make install
 
+# Skip tests for osx-arm64 cross-compiled build
+if [[ "${target_platform}" == osx-arm64 && "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1  ]]; then
+  echo "WARNING: Skipping tests for $target_platform cross-compiled build"
+  exit 0
+fi
+
 # Run tests
 cd "${ERL_TOP}/release/tests/test_server"
 ${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
