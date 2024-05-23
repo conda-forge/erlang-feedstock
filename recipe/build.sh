@@ -53,25 +53,23 @@ make -j $CPU_COUNT
 # cf. https://github.com/conda-forge/erlang-feedstock/issues/16
 sed -i.bak -e '1 s@.*@#!/usr/bin/env perl@' make/make_emakefile
 
+# Create tests
 make release_tests
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
-  # For unknown reason, cross-compilation does not produce the $ERL_TOP/bin/erl binary.
-  # It seems to be only generated during the make install step.
-  # So we first run `make install` before running tests...
-  make install
+# For unknown reason, cross-compilation does not produce the $ERL_TOP/bin/erl binary.
+# It seems to be only generated during the make install step
+# so we first run `make install` before running tests.
+make install
 
-  cd "${ERL_TOP}/release/tests/test_server"
-  ${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
-  cd ${ERL_TOP}
-else
-  # At the same time, native build fails in later step if we run make install before tests :-(
-  # Specifically, conda build step fails with:
-  # File "/opt/conda/lib/python3.10/site-packages/conda_build/build.py", line 1013, in <listcomp>
-  # if open(os.path.join(prefix, f), "rb+").read().find(b"\x00") != -1
-  # OSError: [Errno 26] Text file busy: 'build_artifacts/erlang_xxx/_h_env_xxx/lib/erlang/erts-15.0/bin/epmd'
-  cd "${ERL_TOP}/release/tests/test_server"
-  ${ERL_TOP}/bin/erl -s ts install -s ts smoke_test batch -s init stop
-  cd ${ERL_TOP}
-  make install
-fi
+# Run tests
+cd "${ERL_TOP}/release/tests/test_server"
+${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
+cd ${ERL_TOP}
+
+# We need to explicitly stop the Erlang Port Mapper Daemon (EPMD),
+# otherwise the conda build step fails with:
+# File "/opt/conda/lib/python3.10/site-packages/conda_build/build.py", line 1013, in <listcomp>
+# if open(os.path.join(prefix, f), "rb+").read().find(b"\x00") != -1
+# OSError: [Errno 26] Text file busy: 'build_artifacts/erlang_xxx/_h_env_xxx/lib/erlang/erts-15.0/bin/epmd'
+# See: https://manpages.debian.org/testing/erlang-base/epmd.1.en.html
+${PREFIX}/bin/epmd -kill
