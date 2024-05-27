@@ -62,6 +62,11 @@ make release_tests
 make install
 
 # Run tests
+#
+# We run epmd server explicitly with -relaxed_command_check
+# so that we can later kill it and avoid the following error:
+# "Killing not allowed - living nodes in database."
+epmd  -daemon -relaxed_command_check
 cd "${ERL_TOP}/release/tests/test_server"
 ${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
 cd ${ERL_TOP}
