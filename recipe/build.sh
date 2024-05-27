@@ -22,10 +22,12 @@ bootstrap_build() {
   local CC CXX CPP LD AR RANLIB
   CC=${CC_FOR_BUILD}
   CXX=${CXX_FOR_BUILD}
-  LD=${CC_FOR_BUILD//-clang/-ld}
-  CPP=${CC_FOR_BUILD//-clang/-cpp}
-  AR=${CC_FOR_BUILD//-clang/-ar}
-  RANLIB=${CC_FOR_BUILD//-clang/-ranlib}
+  LD=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ld/')
+  CPP=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-cpp/')
+  AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
+  RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
+  CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
+
   CFLAGS="-O1"
   CXXFLAGS="-O1"
   ./configure \
@@ -73,6 +75,10 @@ if [[ "${target_platform}" == osx-arm64 && "${CONDA_BUILD_CROSS_COMPILATION}" -e
   exit 0
 fi
 
+# We run epmd server explicitly with -relaxed_command_check
+# so that we can later kill it and avoid the following error:
+# "Killing not allowed - living nodes in database."
+epmd  -daemon -relaxed_command_check
 # Run tests
 cd "${ERL_TOP}/release/tests/test_server"
 ${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
