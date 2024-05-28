@@ -11,3 +11,5 @@ github:
 os_version:
   linux_64: cos7
 test: native_and_emulated
+azure:
+  store_build_artifacts: true
