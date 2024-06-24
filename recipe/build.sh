@@ -13,7 +13,7 @@ if [[ "${target_platform}" == osx-* ]]; then
   export CXXFLAGS="${CXXFLAGS} -DTARGET_OS_OSX=1"
 fi
 
-bootstrap_build() {
+function bootstrap_build {
   echo "Building bootstrap erlang for cross-compilation"
   # We need to override the compilation toolchain that is setup for cross-compilation,
   # the bootstrap system needs to be compiled with the guest (x86) toolchain.
@@ -26,11 +26,7 @@ bootstrap_build() {
   CPP=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-cpp/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
-  CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
-
-  CFLAGS="-O1"
-  CXXFLAGS="-O1"
-  ./configure \
+  CFLAGS= CXXFLAGS= ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
@@ -69,17 +65,12 @@ make release_tests
 # so we first run `make install` before running tests.
 make install
 
-# Skip tests for osx-arm64 cross-compiled build
-if [[ "${target_platform}" == osx-arm64 && "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1  ]]; then
-  echo "WARNING: Skipping tests for $target_platform cross-compiled build"
-  exit 0
-fi
-
+# Run tests
+#
 # We run epmd server explicitly with -relaxed_command_check
 # so that we can later kill it and avoid the following error:
 # "Killing not allowed - living nodes in database."
 epmd  -daemon -relaxed_command_check
-# Run tests
 cd "${ERL_TOP}/release/tests/test_server"
 ${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
 cd ${ERL_TOP}
