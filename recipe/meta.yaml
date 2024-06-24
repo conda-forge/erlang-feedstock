@@ -33,8 +33,10 @@ requirements:
 
 test:
   commands:
-    - erl -version
-    - erlc
+    - which erl
+    - which erlc
+    - erl -version    # [build_platform != target_platform]
+    - erlc            # [build_platform != target_platform]
 
 about:
   home: https://www.erlang.org/
