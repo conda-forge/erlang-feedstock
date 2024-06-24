@@ -35,8 +35,8 @@ test:
   commands:
     - which erl
     - which erlc
-    - erl -version    # [build_platform != target_platform]
-    - erlc            # [build_platform != target_platform]
+    - erl -version    # [build_platform == target_platform]
+    - erlc            # [build_platform == target_platform]
 
 about:
   home: https://www.erlang.org/
