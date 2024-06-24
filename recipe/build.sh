@@ -27,7 +27,7 @@ function bootstrap_build {
   CPP=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-cpp/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
-  CFLAGS= CXXFLAGS= ./configure \
+  CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
