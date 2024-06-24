@@ -1,6 +1,11 @@
 #!/bin/bash
 set -ex
 
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./erts/autoconf
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./make/autoconf
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./lib/common_test/test_server
+
 export LIBRARY_PATH="${PREFIX}/lib:${LIBRARY_PATH}"
 export LD_LIBRARY_PATH="${PREFIX}/lib:${LD_LIBRARY_PATH}"
 export ERL_TOP="${PWD}"
@@ -22,7 +27,7 @@ function bootstrap_build {
   CPP=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-cpp/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
-  CFLAGS= CXXFLAGS= ./configure \
+  CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
@@ -60,6 +65,12 @@ make release_tests
 # It seems to be only generated during the make install step
 # so we first run `make install` before running tests.
 make install
+
+# Skip tests for osx-arm64 cross-compiled build
+if [[ "${target_platform}" == osx-arm64 && "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1  ]]; then
+  echo "WARNING: Skipping tests for $target_platform cross-compiled build"
+  exit 0
+fi
 
 # Run tests
 #
