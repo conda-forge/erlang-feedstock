@@ -9,17 +9,15 @@ source:
   sha256: d34b409cb5968ae47dd5a0c4f85b925d5601898d90788bbb08d514964a3a141d
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
   build:
-    - {{ compiler('c') }}
     - {{ stdlib("c") }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - autoconf 2.*
-    - m4 1.4.*
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+    - gnuconfig
     - make
   host:
     - perl
@@ -35,8 +33,10 @@ requirements:
 
 test:
   commands:
-    - erl -version
-    - erlc
+    - which erl
+    - which erlc
+    - erl -version    # [build_platform == target_platform]
+    - erlc            # [build_platform == target_platform]
 
 about:
   home: https://www.erlang.org/
@@ -51,3 +51,4 @@ extra:
     - scopatz
     - jakirkham
     - sodre
+    - danielhollas
