@@ -44,9 +44,12 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   bootstrap_build
 fi
 
+# --erl_xcomp_sysroot is needed for cross-compilation and should be ignored otherwise.
+# https://github.com/erlang/otp/blob/master/HOWTO/INSTALL-CROSS.md#cross-system-root-locations
 ./configure \
     --prefix="${PREFIX}" \
     --with-ssl="${PREFIX}" \
+    --erl_xcomp_sysroot="${PREFIX}" \
     --without-javac \
     --enable-m${ARCH}-build \
     || { cat make/config.log ; exit 1; }
