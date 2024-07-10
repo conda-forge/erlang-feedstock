@@ -1,4 +1,4 @@
-{% set version = "27.0" %}
+{% set version = "27.0.1" %}
 
 package:
   name: erlang
@@ -6,10 +6,10 @@ package:
 
 source:
   url: https://github.com/erlang/otp/archive/OTP-{{ version }}.tar.gz
-  sha256: 5c8ad9143ee81c26aae4699c4bc64f76c5e838efb778f988ad9bb1305f505fed
+  sha256: 47d96bb7044cf44bca886213fa828ef82457a911b7622c453d9b3c615b6f68ab
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
