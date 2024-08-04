@@ -42,14 +42,16 @@ function bootstrap_build {
 # https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   bootstrap_build
+  # erl_xcomp_sysroot is needed for cross-compilation to find SSH headers for target arch.
+  # https://github.com/erlang/otp/blob/master/HOWTO/INSTALL-CROSS.md#cross-system-root-locations
+  export erl_xcomp_sysroot="${CONDA_BUILD_SYSROOT}"
 fi
 
 ./configure \
     --prefix="${PREFIX}" \
     --with-ssl="${PREFIX}" \
     --without-javac \
-    --enable-m${ARCH}-build \
-    || { cat make/config.log ; exit 1; }
+    --enable-m${ARCH}-build
 
 cat make/config.log
 make -j $CPU_COUNT
