@@ -31,10 +31,13 @@ function bootstrap_build {
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
-      || { cat make/config.log ; exit 1; }
+      || {
+      echo -e "\n######### Bootstrap build config.log #########"
+      cat make/config.log
+      echo -e "######### END OF config.log #########\n"
+      exit 1
+      }
 
-  echo "Boostrap build config.log"
-  cat make/config.log
   make -j "$CPU_COUNT"
 }
 
