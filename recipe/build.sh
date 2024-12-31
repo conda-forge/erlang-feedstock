@@ -1,6 +1,5 @@
 #!/bin/bash
 set -ex
-
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/gnuconfig/config.* ./erts/autoconf
 cp $BUILD_PREFIX/share/gnuconfig/config.* ./make/autoconf
