@@ -37,6 +37,8 @@ function bootstrap_build {
   make -j "$CPU_COUNT"
 }
 
+conda list
+
 # For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
 # https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
