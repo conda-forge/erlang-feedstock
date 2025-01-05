@@ -38,6 +38,9 @@ function bootstrap_build {
 }
 
 conda list
+# Patch configure from https://github.com/erlang/otp/pull/9233/
+git clone -b erlang-otp-9211-maint-27 https://github.com/lukebakken/otp.git otp-configure-patch
+cp otp-configure-patch/erts/configure erts/configure
 
 # For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
 # https://www.erlang.org/doc/installation_guide/install-cross#Build-and-Install-Procedure_Building-With-configuremake-Directly_Building-a-Bootstrap-System
