@@ -27,10 +27,16 @@ function bootstrap_build {
   LD=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ld/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
+
+  # NOTE: clang-18 exposes an issue with outdated vendored zlib,
+  # so we need to use the system zlib instead, at least until new erlang
+  # release which will have updated zlib 1.3.1, see:
+  # https://github.com/erlang/otp/pull/8862
   CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
+      --disable-builtin-zlib \
       || { cat make/config.log ; exit 1; }
 
   echo "Boostrap build config.log"
@@ -46,7 +52,6 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1 ]]; then
   # https://github.com/erlang/otp/blob/master/HOWTO/INSTALL-CROSS.md#cross-system-root-locations
   export erl_xcomp_sysroot="${CONDA_BUILD_SYSROOT}"
 fi
-
 ./configure \
     --prefix="${PREFIX}" \
     --with-ssl="${PREFIX}" \
