@@ -23,8 +23,8 @@ function bootstrap_build {
   local CC CXX CPP LD AR RANLIB
   CC=${CC_FOR_BUILD}
   CXX=${CXX_FOR_BUILD}
+  CPP=${CPP_FOR_BUILD}
   LD=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ld/')
-  CPP=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-cpp/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
   CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
