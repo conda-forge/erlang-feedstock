@@ -37,10 +37,12 @@ function bootstrap_build {
       --host="${BUILD}" \
       --without-javac \
       --disable-builtin-zlib \
-      || { cat make/config.log ; exit 1; }
+      || { cat make/config.log; cat erts/config.log; exit 1; }
 
-  echo "Boostrap build config.log"
+  echo "======== Boostrap build config.log ==========="
   cat make/config.log
+  echo "======== ERTS build config.log ==========="
+  cat erts/config.log
   make -j "$CPU_COUNT"
 }
 
