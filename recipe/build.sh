@@ -29,7 +29,7 @@ function bootstrap_build {
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
   PREFIX_CROSS=$PREFIX
   export PREFIX="${BUILD_PREFIX}"
-  ls $BUILD_PREFIX
+  ls $BUILD_PREFIX/lib
   echo $LDFLAGS
 
   # NOTE: clang-18 exposes an issue with outdated vendored zlib,
@@ -38,7 +38,7 @@ function bootstrap_build {
   # https://github.com/erlang/otp/pull/8862
   CFLAGS="-O1" CXXFLAGS="-O1" \
   CPPFLAGS="$CPPFLAGS -isystem $BUILD_PREFIX/include" \
-  LDFLAGS="$LDFLAGS -L$BUILD_PREFIX/lib" \
+  LDFLAGS="-L$BUILD_PREFIX/lib" \
   ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
