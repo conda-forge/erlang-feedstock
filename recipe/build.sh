@@ -20,15 +20,16 @@ function bootstrap_build {
   # the bootstrap system needs to be compiled with the guest (x86) toolchain.
   # Otherwise, configure fails with:
   # error: Cannot both cross compile and build a bootstrap system
-  local CC CXX CPP LD AR RANLIB LDFLAGS_CROSS
+  local CC CXX CPP LD AR RANLIB PREFIX_CROSS
   CC=${CC_FOR_BUILD}
   CXX=${CXX_FOR_BUILD}
   CPP=${CPP_FOR_BUILD}
   LD=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ld/')
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
-  LDFLAGS_CROSS=$LDFLAGS
-  export LDFLAGS="${LDFLAGS//PREFIX/BUILD_PREFIX}"
+  PREFIX_CROSS=$PREFIX
+  export PREFIX="${BUILD_PREFIX}"
+  ls $BUILD_PREFIX
 
   # NOTE: clang-18 exposes an issue with outdated vendored zlib,
   # so we need to use the system zlib instead, at least until new erlang
@@ -46,7 +47,7 @@ function bootstrap_build {
   echo "======== ERTS build config.log ==========="
   cat erts/config.log
   make -j "$CPU_COUNT"
-  export LDFLAGS=$LDFLAGS_CROSS
+  export PREFIX=$PREFIX_CROSS
 }
 
 # For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
