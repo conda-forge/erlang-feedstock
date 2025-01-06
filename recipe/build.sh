@@ -36,7 +36,10 @@ function bootstrap_build {
   # so we need to use the system zlib instead, at least until new erlang
   # release which will have updated zlib 1.3.1, see:
   # https://github.com/erlang/otp/pull/8862
-  CFLAGS="-O1" CXXFLAGS="-O1" CPPFLAGS="$CPPFLAGS -isystem $BUILD_PREFIX/include" ./configure \
+  CFLAGS="-O1" CXXFLAGS="-O1" \
+  CPPFLAGS="$CPPFLAGS -isystem $BUILD_PREFIX/include" \
+  LDFLAGS="$LDFLAGS -L$BUILD_PREFIX/lib" \
+  ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
