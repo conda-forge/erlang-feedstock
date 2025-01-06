@@ -19,6 +19,7 @@ requirements:
     - {{ compiler("cxx") }}
     - gnuconfig
     - make
+    - zlib  # [build_platform != target_platform]
   host:
     - perl
     - readline
