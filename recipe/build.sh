@@ -28,13 +28,13 @@ function bootstrap_build {
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
   LDFLAGS_CROSS=$LDFLAGS
-  export LDFLAGS='-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs -Wl,-rpath,$BUILD_PREFIX/lib -L$BUILD_PREFIX/lib'
+  export LDFLAGS="${LDFLAGS//PREFIX/BUILD_PREFIX}"
 
   # NOTE: clang-18 exposes an issue with outdated vendored zlib,
   # so we need to use the system zlib instead, at least until new erlang
   # release which will have updated zlib 1.3.1, see:
   # https://github.com/erlang/otp/pull/8862
-  CFLAGS="-O1" CXXFLAGS="-O1" LDFLAGS='-Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs -Wl,-rpath,$BUILD_PREFIX/lib -L$BUILD_PREFIX/lib' ./configure \
+  CFLAGS="-O1" CXXFLAGS="-O1" ./configure \
       --enable-bootstrap-only \
       --host="${BUILD}" \
       --without-javac \
