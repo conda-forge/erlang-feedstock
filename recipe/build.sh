@@ -28,7 +28,7 @@ function bootstrap_build {
   AR=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ar/')
   RANLIB=$(echo "${CC_FOR_BUILD}" | sed -E 's/-(cc|clang)$/-ranlib/')
   LDFLAGS_CROSS=$LDFLAGS
-  LDFLAGS="${LDFLAGS//PREFIX/BUILD_PREFIX}"
+  export LDFLAGS="${LDFLAGS//PREFIX/BUILD_PREFIX}"
 
   # NOTE: clang-18 exposes an issue with outdated vendored zlib,
   # so we need to use the system zlib instead, at least until new erlang
@@ -46,7 +46,7 @@ function bootstrap_build {
   echo "======== ERTS build config.log ==========="
   cat erts/config.log
   make -j "$CPU_COUNT"
-  LDFLAGS=$LDFLAGS_CROSS
+  export LDFLAGS=$LDFLAGS_CROSS
 }
 
 # For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
