@@ -64,7 +64,9 @@ make -j $CPU_COUNT
 sed -i.bak -e '1 s@.*@#!/usr/bin/env perl@' make/make_emakefile
 
 # Create tests
-make release_tests
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -ne 1  ]]; then
+  make release_tests
+fi
 
 # For unknown reason, cross-compilation does not produce the $ERL_TOP/bin/erl binary.
 # It seems to be only generated during the make install step
@@ -72,7 +74,7 @@ make release_tests
 make install
 
 # Skip tests for osx-arm64 cross-compiled build
-if [[ "${target_platform}" == osx-arm64 && "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1  ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" -eq 1  ]]; then
   echo "WARNING: Skipping tests for $target_platform cross-compiled build"
   exit 0
 fi
