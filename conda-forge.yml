@@ -3,7 +3,7 @@ bot:
 build_platform:
   linux_aarch64: linux_aarch64
   linux_ppc64le: linux_64
-  osx_arm64: osx_64
+  osx_arm64: osx_arm64
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
@@ -17,3 +17,8 @@ os_version:
 provider:
   linux_aarch64: default
   linux_ppc64le: default
+  osx_arm64: default
+azure:
+  store_build_artifacts: true
+github_actions:
+  store_build_artifacts: true
