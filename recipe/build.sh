@@ -36,7 +36,7 @@ function bootstrap_build {
 
   echo "Boostrap build config.log"
   cat make/config.log
-  make -j "$CPU_COUNT"
+  make -j
 }
 
 # For builds that are cross-compiled (aarch64), we need to build a bootstrap system first.
@@ -55,7 +55,7 @@ fi
     --enable-m${ARCH}-build
 
 cat make/config.log
-make -j $CPU_COUNT
+make -j
 
 # Fix up too long shebang line which is blocking tests on Linux
 # cf. https://github.com/conda-forge/erlang-feedstock/issues/16
