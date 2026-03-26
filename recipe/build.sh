@@ -84,7 +84,7 @@ fi
 # "Killing not allowed - living nodes in database."
 epmd  -daemon -relaxed_command_check
 cd "${ERL_TOP}/release/tests/test_server"
-${PREFIX}/bin/erl -s ts install -s ts smoke_test batch -s init stop
+${PREFIX}/bin/erl -s ts install -s ts run crypto -s ts smoke_test batch -s init stop
 cd ${ERL_TOP}
 
 # We need to explicitly stop the Erlang Port Mapper Daemon (EPMD),
