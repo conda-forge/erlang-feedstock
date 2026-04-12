@@ -1,4 +1,4 @@
-{% set version = "27.2" %}
+{% set version = "25.3.2.21" %}
 
 package:
   name: erlang
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/erlang/otp/archive/OTP-{{ version }}.tar.gz
-  sha256: 0727cf869622544a2434a104109b31f5fadb8dc6b532287aea182fab95922ea8
+  sha256: 6761432927a9be4f5c13c4019acd6fa3d2f4363198f790947328023aece1986f
 
 build:
   number: 0
@@ -36,8 +36,11 @@ test:
   commands:
     - which erl
     - which erlc
-    - erl -version    # [build_platform == target_platform]
-    - erlc            # [build_platform == target_platform]
+    - erl -version  # [build_platform == target_platform]
+    - erlc  # [build_platform == target_platform]
+    - epmd -daemon  # [build_platform == target_platform]
+    - epmd -names  # [build_platform == target_platform]
+    - epmd -kill  # [build_platform == target_platform]
 
 about:
   home: https://www.erlang.org/
