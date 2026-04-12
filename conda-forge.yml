@@ -2,7 +2,6 @@ bot:
   automerge: true
 build_platform:
   linux_aarch64: linux_aarch64
-  osx_arm64: osx_arm64
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
@@ -14,7 +13,6 @@ os_version:
   linux_aarch64: cos7
 provider:
   linux_aarch64: default
-  osx_arm64: default
 azure:
   store_build_artifacts: true
 github_actions:
