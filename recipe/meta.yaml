@@ -36,8 +36,11 @@ test:
   commands:
     - which erl
     - which erlc
-    - erl -version    # [build_platform == target_platform]
-    - erlc            # [build_platform == target_platform]
+    - erl -version  # [build_platform == target_platform]
+    - erlc -list-features # [build_platform == target_platform]
+    - epmd -daemon  # [build_platform == target_platform]
+    - epmd -names  # [build_platform == target_platform]
+    - epmd -kill  # [build_platform == target_platform]
 
 about:
   home: https://www.erlang.org/
